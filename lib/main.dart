@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       create: (context) => TaskDoBloc(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter app',
+        title: 'Task app',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
