@@ -13,16 +13,16 @@ class AdviceWidget extends StatelessWidget {
         color: Colors.red,
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Stack(
-        textDirection: TextDirection.ltr,
-        children:[ Container(
-          margin: const EdgeInsets.only(top: 8,left: 8,right: 8,bottom: 30),
+      child: Stack(textDirection: TextDirection.ltr, children: [
+        Container(
+          margin: const EdgeInsets.only(top: 8, left: 8, right: 8, bottom: 30),
           decoration: BoxDecoration(
-            //color: Colors.blue,
+              //color: Colors.blue,
               borderRadius: BorderRadius.circular(18),
               image: DecorationImage(
-                image: AssetImage('assets/images/advice${indexx.toString()}.jpg'),fit: BoxFit.cover
-              )),
+                  image: AssetImage(
+                      'assets/images/advice${indexx.toString()}.jpg'),
+                  fit: BoxFit.cover)),
           child: Center(
             child: Text(
               '$indexx Advice Widget',
@@ -32,24 +32,35 @@ class AdviceWidget extends StatelessWidget {
         ),
         const Positioned(
             bottom: 4,
-            left:2,
+            left: 2,
             child: SizedBox(
                 height: 24,
-                child: CircleAvatar(backgroundImage: AssetImage('assets/images/advice0.jpg',),))),
-          const Positioned(
-              bottom: 4,
-              left:20,
-              child: SizedBox(
-                  height: 24,
-                  child: CircleAvatar(backgroundImage: AssetImage('assets/images/advice1.jpg',),))),
-          const Positioned(
-              bottom: 4,
-              left:32,
-              child: SizedBox(
-                  height: 24,
-                  child: CircleAvatar(backgroundImage: AssetImage('assets/images/advice2.jpg',),))),
-        ]
-      ),
+                child: CircleAvatar(
+                  backgroundImage: AssetImage(
+                    'assets/images/advice0.jpg',
+                  ),
+                ))),
+        const Positioned(
+            bottom: 4,
+            left: 20,
+            child: SizedBox(
+                height: 24,
+                child: CircleAvatar(
+                  backgroundImage: AssetImage(
+                    'assets/images/advice1.jpg',
+                  ),
+                ))),
+        const Positioned(
+            bottom: 4,
+            left: 32,
+            child: SizedBox(
+                height: 24,
+                child: CircleAvatar(
+                  backgroundImage: AssetImage(
+                    'assets/images/advice2.jpg',
+                  ),
+                ))),
+      ]),
     );
   }
 }
