@@ -17,18 +17,21 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool isPressed = true;
-  bool? isHave;
+  bool isHave=false;
 
   @override
   void initState() {
     super.initState();
     LocalStorage().checkTask().then((value) {isHave=value;
-    print('ISHAVE : ${isHave} ; VALUE : $value');
+    print('ISHAVE : $isHave ; VALUE : $value');
+
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    print('ISHAVE : $isHave');
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xff1f2534),
@@ -151,31 +154,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            Expanded(
+            isHave==true ? const Expanded(child: SizedBox(child: Text('fd'),)):  Expanded(
               child: BlocBuilder<TaskDoBloc, TaskDoState>(
                 builder: (context, state) {
                   print('HOMESCREEN ${state.runtimeType}');
 
-                  if (state is TaskDoInitial && isHave==false) {
+                  if (state is TaskDoInitial ) {
                     return const Center(
                       child: Text(
                         'Yet did not add task', style: TextStyle(color: Colors
                           .cyanAccent, fontSize: 22),),
-                    );
-                  }else if(state is TaskDoInitial && isHave==true){
-                    return SizedBox(
-                      child: ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        itemCount: LocalStorage().getTasks().,
-                        itemBuilder: (context, index) {
-                          return ShowTask(
-                            name: state.taskModels[index].task,
-                            taskTime: state.taskModels[index].taskTime,
-                            icon: const Icon(Icons.add),
-                            index: index,
-                          );
-                        },
-                      ),
                     );
                   } else if (state is TaskLoaded) {
                     return SizedBox(
@@ -198,6 +186,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
             ),
+
           ],
         ),
       ),
