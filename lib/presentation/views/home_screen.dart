@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_app/data/local_storage.dart';
@@ -17,21 +16,15 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool isPressed = true;
-  bool isHave=false;
 
-  @override
-  void initState() {
-    super.initState();
-    LocalStorage().checkTask().then((value) {isHave=value;
-    print('ISHAVE : $isHave ; VALUE : $value');
 
-    });
-  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
-    print('ISHAVE : $isHave');
-
+print('HELLO');
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xff1f2534),
@@ -52,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       const CircleAvatar(
                         backgroundImage:
-                        AssetImage('assets/images/home_image.jpg'),
+                            AssetImage('assets/images/home_image.jpg'),
                         radius: 20,
                       ),
                     ],
@@ -81,10 +74,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: const EdgeInsets.only(
                         left: 8, right: 8, top: 10, bottom: 12),
                     child: GestureDetector(
-                        child: AdviceWidget(indexx: index),
-                    onTap: (){
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const AdviceInfo()));
-                    },
+                      child: AdviceWidget(indexx: index),
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const AdviceInfo()));
+                      },
                     ),
                   );
                 },
@@ -109,8 +103,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
-                          color:
-                          isPressed ? const Color(0xff1f2534) : Colors.white,
+                          color: isPressed
+                              ? const Color(0xff1f2534)
+                              : Colors.white,
                         ),
                         child: Text(
                           'Task List',
@@ -135,8 +130,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
-                          color:
-                          isPressed ? Colors.white : const Color(0xff1f2534),
+                          color: isPressed
+                              ? Colors.white
+                              : const Color(0xff1f2534),
                         ),
                         child: Text(
                           'Task Complited',
@@ -154,39 +150,66 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            isHave==true ? const Expanded(child: SizedBox(child: Text('fd'),)):  Expanded(
-              child: BlocBuilder<TaskDoBloc, TaskDoState>(
-                builder: (context, state) {
-                  print('HOMESCREEN ${state.runtimeType}');
+            Expanded(
+                child: FutureBuilder(
 
-                  if (state is TaskDoInitial ) {
-                    return const Center(
-                      child: Text(
-                        'Yet did not add task', style: TextStyle(color: Colors
-                          .cyanAccent, fontSize: 22),),
-                    );
-                  } else if (state is TaskLoaded) {
-                    return SizedBox(
-                      child: ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        itemCount: state.taskModels.length,
-                        itemBuilder: (context, index) {
-                          return ShowTask(
-                            name: state.taskModels[index].task,
-                            taskTime: state.taskModels[index].taskTime,
-                            icon: const Icon(Icons.add),
-                            index: index,
-                          );
-                        },
-                      ),
-                    );
-                  }
-                  return const Center(child: Text('Something went wrong',
-                    style: TextStyle(color: Colors.cyanAccent, fontSize: 22),));
-                },
-              ),
-            ),
+                    future: LocalStorage().getTasks(),
 
+                    builder: (BuildContext context,
+                        AsyncSnapshot<List<String>?> snapshot) {
+                      if (snapshot.hasData) {
+                        return Center(
+                          child: Text(snapshot.data.toString()),
+                        );
+                      }
+                      else if (!snapshot.hasData) {
+                        Expanded(
+                          child: BlocBuilder<TaskDoBloc, TaskDoState>(
+                            builder: (context, state) {
+                              print('HOMESCREEN ${state.runtimeType}');
+
+                              if (state is TaskDoInitial) {
+                                return const Center(
+                                  child: Text(
+                                    'Yet did not add task',
+                                    style: TextStyle(
+                                        color: Colors.cyanAccent, fontSize: 22),
+                                  ),
+                                );
+                              } else if (state is TaskLoaded) {
+                                return SizedBox(
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.vertical,
+                                    itemCount: state.taskModels.length,
+                                    itemBuilder: (context, index) {
+                                      return ShowTask(
+                                        name: state.taskModels[index].task,
+                                        taskTime:
+                                            state.taskModels[index].taskTime,
+                                        icon: const Icon(Icons.add),
+                                        index: index,
+                                      );
+                                    },
+                                  ),
+                                );
+                              }
+                              return const Center(
+                                  child: Text(
+                                'Something went wrong',
+                                style: TextStyle(
+                                    color: Colors.cyanAccent, fontSize: 22),
+                              ));
+                            },
+                          ),
+                        );
+                      }
+                      else {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      return const SizedBox.shrink();
+                    }))
           ],
         ),
       ),

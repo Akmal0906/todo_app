@@ -140,7 +140,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                                 taskTime: timeController.text.trim(),
                                 description: descriptionController.text
                                     .trim())));
-                        Navigator.of(context).pop();
+                        Navigator.pop(context);
                       },
                     );
                   },
