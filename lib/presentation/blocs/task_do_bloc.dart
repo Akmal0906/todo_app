@@ -1,9 +1,7 @@
-import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_app/data/local_storage.dart';
 import 'package:todo_app/domain/models/task_model.dart';
 
@@ -12,7 +10,9 @@ part 'task_do_event.dart';
 part 'task_do_state.dart';
 
 class TaskDoBloc extends Bloc<TaskDoEvent, TaskDoState> {
-  TaskDoBloc() : super(TaskDoInitial()) {
+  LocalStorage localStorage;
+
+  TaskDoBloc(this.localStorage) : super(const TaskDoInitial(taskModels: [])) {
     on<AddEvent>(_addTask);
     on<DeleteEvent>(_deleteTask);
   }

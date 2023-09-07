@@ -5,6 +5,8 @@ abstract class TaskDoState extends Equatable {
 }
 
 class TaskDoInitial extends TaskDoState {
+ final   List<TaskModel>? taskModels;
+   const TaskDoInitial({this.taskModels=const[]});
   @override
   List<Object> get props => [];
 }

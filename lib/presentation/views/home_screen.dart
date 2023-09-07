@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_app/data/local_storage.dart';
@@ -16,15 +18,23 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool isPressed = true;
+  bool isPress2=false;
+@override
+  void initState() {
 
+  super.initState();
+  measure();
 
+}
 
-
-
-
+  Future<void> measure()async{
+ Timer timer=Timer(const Duration(seconds: 3),(){
+ print('INIT STATE HELLO');
+ });
+  }
   @override
   Widget build(BuildContext context) {
-print('HELLO');
+    print('HELLO');
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xff1f2534),
@@ -114,9 +124,12 @@ print('HELLO');
                         ),
                       ),
                       onTap: () {
-                        setState(() {
-                          isPressed = !isPressed;
-                        });
+                          setState(() {
+
+                            isPressed =true;
+                          });
+
+
                       },
                     ),
                   ),
@@ -142,7 +155,7 @@ print('HELLO');
                       ),
                       onTap: () {
                         setState(() {
-                          isPressed = !isPressed;
+                          isPressed =false;
                         });
                       },
                     ),
@@ -151,65 +164,48 @@ print('HELLO');
               ),
             ),
             Expanded(
-                child: FutureBuilder(
+              child: BlocBuilder<TaskDoBloc, TaskDoState>(
+                builder: (context, state) {
+                  print('HOMESCREEN ${state.runtimeType}');
 
-                    future: LocalStorage().getTasks(),
-
-                    builder: (BuildContext context,
-                        AsyncSnapshot<List<String>?> snapshot) {
-                      if (snapshot.hasData) {
-                        return Center(
-                          child: Text(snapshot.data.toString()),
-                        );
-                      }
-                      else if (!snapshot.hasData) {
-                        Expanded(
-                          child: BlocBuilder<TaskDoBloc, TaskDoState>(
-                            builder: (context, state) {
-                              print('HOMESCREEN ${state.runtimeType}');
-
-                              if (state is TaskDoInitial) {
-                                return const Center(
-                                  child: Text(
-                                    'Yet did not add task',
-                                    style: TextStyle(
-                                        color: Colors.cyanAccent, fontSize: 22),
-                                  ),
-                                );
-                              } else if (state is TaskLoaded) {
-                                return SizedBox(
-                                  child: ListView.builder(
-                                    scrollDirection: Axis.vertical,
-                                    itemCount: state.taskModels.length,
-                                    itemBuilder: (context, index) {
-                                      return ShowTask(
-                                        name: state.taskModels[index].task,
-                                        taskTime:
-                                            state.taskModels[index].taskTime,
-                                        icon: const Icon(Icons.add),
-                                        index: index,
-                                      );
-                                    },
-                                  ),
-                                );
-                              }
-                              return const Center(
-                                  child: Text(
-                                'Something went wrong',
-                                style: TextStyle(
-                                    color: Colors.cyanAccent, fontSize: 22),
-                              ));
+                  if (state is TaskDoInitial) {
+                    return const Center(
+                      child: Text(
+                        'Yet did not add task',
+                        style:
+                            TextStyle(color: Colors.cyanAccent, fontSize: 22),
+                      ),
+                    );
+                  } else if (state is TaskLoaded) {
+                    return SizedBox(
+                      child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        itemCount: state.taskModels.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            child: ShowTask(
+                              name: state.taskModels[index].task,
+                              taskTime: state.taskModels[index].taskTime,
+                              icon: const Icon(Icons.add),
+                              index: index,
+                            ),
+                            onTap: () {
+                              context.read<TaskDoBloc>().add(DeleteEvent(
+                                  taskModel: state.taskModels[index]));
                             },
-                          ),
-                        );
-                      }
-                      else {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                      return const SizedBox.shrink();
-                    }))
+                          );
+                        },
+                      ),
+                    );
+                  }
+                  return const Center(
+                      child: Text(
+                    'Something went wrong',
+                    style: TextStyle(color: Colors.cyanAccent, fontSize: 22),
+                  ));
+                },
+              ),
+            ),
           ],
         ),
       ),

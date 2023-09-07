@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_app/data/local_storage.dart';
 import 'package:todo_app/presentation/blocs/task_do_bloc.dart';
 import 'package:todo_app/presentation/views/main_screen.dart';
 
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => TaskDoBloc(),
+      create: (context) => TaskDoBloc(LocalStorage()),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Task app',
