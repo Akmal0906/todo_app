@@ -15,7 +15,7 @@ class _MainScreenState extends State<MainScreen> {
   int currentIndex = 0;
   List<Widget> list = [
     const HomeScreen(),
-    const AccountScreen(),
+     AccountScreen(),
     const TaskAddScreen()
   ];
 
