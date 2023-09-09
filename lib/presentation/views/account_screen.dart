@@ -46,19 +46,16 @@ class _AccountScreenState extends State<AccountScreen> {
                    ),
            Container(
              margin:const  EdgeInsets.only(left: 10,right: 10),
-             height:24,
+             padding: EdgeInsets.only(top: 10),
+             height:40,
              width: double.infinity,
 
              child: ElevatedButton(
                  style: ElevatedButton.styleFrom(
                    backgroundColor: Colors.indigo,
                    shadowColor:Colors.green,
-                   shape: const CircleBorder(
-                     side: BorderSide(
-                       width: 1,
-                       color: Colors.yellow,
-
-                     )
+                   shape: RoundedRectangleBorder(
+                     borderRadius: BorderRadius.circular(8)
                    )
 
                  ),
